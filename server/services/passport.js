@@ -17,7 +17,8 @@ passport.deserializeUser((id, done) => {
 const googleStrategyConfig = {
   clientID: keys.googleClientID,
   clientSecret: keys.googleClientSecret,
-  callbackURL: '/auth/google/callback'
+  callbackURL: '/auth/google/callback',
+  proxy: true
 };
 
 const persistUser = (accessToken, refreshToken, profile, done) => {
