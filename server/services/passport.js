@@ -21,17 +21,14 @@ const googleStrategyConfig = {
   proxy: true
 };
 
-const persistUser = (accessToken, refreshToken, profile, done) => {
-  User.findOne({ googleId: profile.id })
-    .then(existingUser => {
-      if (existingUser) {
-        done(null, existingUser);
-      } else {
-        new User({ googleId: profile.id })
-          .save()
-          .then(user => done(null, user));
-      }
-    });
+const persistUser = async (accessToken, refreshToken, profile, done) => {
+  const user = await User.findOne({ googleId: profile.id });
+
+  if (!user) {
+    user = await new User({ googleId: profile.id }).save();
+  }
+
+  done(null, user);
 };
 
 const googleStrategy = new GoogleStrategy(googleStrategyConfig, persistUser);
